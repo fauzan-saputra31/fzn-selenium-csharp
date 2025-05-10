@@ -1,0 +1,20 @@
+﻿[
+  {
+    "Name": "Test Computer 1",
+    "Introduced": "2020-01-01",
+    "Discontinued": "2023-01-01",
+    "Company": "Apple Inc."
+  },
+  {
+    "Name": "Legacy Machine",
+    "Introduced": "2010-06-15",
+    "Discontinued": "2015-06-15",
+    "Company": "IBM"
+  },
+  {
+    "Name": "Gaming Rig",
+    "Introduced": "2022-03-20",
+    "Discontinued": "2050-01-01",
+    "Company": "ASUS"
+  }
+]
