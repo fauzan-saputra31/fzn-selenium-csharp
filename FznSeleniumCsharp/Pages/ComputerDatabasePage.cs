@@ -4,27 +4,47 @@ namespace FznSeleniumCsharp.Pages;
 
 public class ComputerDatabasePage(IWebDriver driver) : BasePage(driver)
 {
-    private static By BtnAddNewComputerLocator => By.Id("add");
-    private static By BtnCreateThisComputerLocator => By.XPath("//input[@value='Create this computer']");
+    private static By BtnAddNewLocator => By.Id("add");
+    private static By BtnCreateLocator => By.XPath("//input[@value='Create this computer']");
+    private static By BtnSaveLocator => By.XPath("//input[@value='Save this computer']");
+    private static By BtnSubmitSearchLocator => By.Id("searchsubmit");
     private static By DrpdwnCompanyLocator => By.Id("company");
-    private static By TxCreateComputerSuccessLocator => By.XPath("//div[@class='alert-message warning']");
-    private static By TxbxComputerNameLocator => By.Id("name");
+    private static By TxCreateSuccessLocator => By.XPath("//div[@class='alert-message warning']");
+    private static By TxNameLinkLocator(string text) => By.XPath($"(//a[contains(text(), '{text}')])[1]");
+    private static By TxbxNameLocator => By.Id("name");
     private static By TxbxDtDiscontinuedLocator => By.Id("discontinued");
     private static By TxbxDtIntroducedLocator => By.Id("introduced");
+    private static By TxbxSearchLocator => By.Id("searchbox");
     
-    public void AddNewComputer(string computerName, string computerDateIntroduced, string computerDateDiscontinued, string company)
+    public void AddNew(string name, string introduced, string discontinued, string company)
     {
-        Click(BtnAddNewComputerLocator);
-        Type(TxbxComputerNameLocator, computerName);
-        Type(TxbxDtIntroducedLocator, computerDateIntroduced);
-        Type(TxbxDtDiscontinuedLocator, computerDateDiscontinued);
+        Click(BtnAddNewLocator);
+        Type(TxbxNameLocator, name);
+        Type(TxbxDtIntroducedLocator, introduced);
+        Type(TxbxDtDiscontinuedLocator, discontinued);
         SelectDropDownByText(DrpdwnCompanyLocator, company);
-        Click(BtnCreateThisComputerLocator);
+        Click(BtnCreateLocator);
     }
     
-    public bool IsComputerCreated(string computerName)
+    public void Edit(string computer, string name, string introduced, string discontinued, string company)
     {
-        return GetText(TxCreateComputerSuccessLocator).Contains(computerName);
+        Click(TxNameLinkLocator(computer));
+        Type(TxbxNameLocator, name);
+        Type(TxbxDtIntroducedLocator, introduced);
+        Type(TxbxDtDiscontinuedLocator, discontinued);
+        SelectDropDownByText(DrpdwnCompanyLocator, company);
+        Click(BtnSaveLocator);
+    }
+    
+    public void FilterByName(string name)
+    {
+        Type(TxbxSearchLocator, name);
+        Click(BtnSubmitSearchLocator);
+    }
+    
+    public bool IsCreatedOrUpdated(string name)
+    {
+        return GetText(TxCreateSuccessLocator).Contains(name);
     }
     
 }

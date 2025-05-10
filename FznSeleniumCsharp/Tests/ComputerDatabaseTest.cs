@@ -23,12 +23,28 @@ public class ComputerDatabaseTest : BaseTest
     {
         Driver.Navigate().GoToUrl(BaseUrlComputerDatabase);
         var computerDatabasePage = new ComputerDatabasePage(Driver);
-        computerDatabasePage.AddNewComputer(
-            computerName: name,
-            computerDateIntroduced: introduced,
-            computerDateDiscontinued: discontinued,
+        computerDatabasePage.AddNew(
+            name: name,
+            introduced: introduced,
+            discontinued: discontinued,
             company: company
             );
-        Assert.AreEqual(computerDatabasePage.IsComputerCreated(computerName: name), true);
+        Assert.AreEqual(computerDatabasePage.IsCreatedOrUpdated(name: name), true);
+    }
+    
+    [Test]
+    public void SuccessfulEditComputer()
+    {
+        Driver.Navigate().GoToUrl(BaseUrlComputerDatabase);
+        var computerDatabasePage = new ComputerDatabasePage(Driver);
+        computerDatabasePage.FilterByName(name: "ACE");
+        computerDatabasePage.Edit(
+            computer: "Ace",
+            name: "new name",
+            introduced: "1900-01-01",
+            discontinued: "2099-12-31",
+            company: "Apple Inc."
+            );
+        Assert.AreEqual(computerDatabasePage.IsCreatedOrUpdated(name: "new name"), true);
     }
 }
