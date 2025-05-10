@@ -9,11 +9,12 @@ public class BaseTest
     protected IWebDriver Driver = null!;
     private readonly string _browser = ConfigReader.Get("browser");
     protected readonly string BaseUrlComputerDatabase = ConfigReader.Get("baseUrlComputerDatabase");
+    protected readonly string BaseUrlJavascriptAlert = ConfigReader.Get("baseUrlJavascriptAlert");
 
     [SetUp]
     public void SetUp()
     {
-        Driver = WebDriverFactory.CreateWebDriver("chrome");
+        Driver = WebDriverFactory.CreateWebDriver(_browser);
     }
     
     [TearDown]

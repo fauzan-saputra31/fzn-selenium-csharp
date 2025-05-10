@@ -6,6 +6,7 @@ public class ComputerDatabasePage(IWebDriver driver) : BasePage(driver)
 {
     private static By BtnAddNewLocator => By.Id("add");
     private static By BtnCreateLocator => By.XPath("//input[@value='Create this computer']");
+    private static By BtnDeleteLocator => By.XPath("//input[@value='Delete this computer']");
     private static By BtnSaveLocator => By.XPath("//input[@value='Save this computer']");
     private static By BtnSubmitSearchLocator => By.Id("searchsubmit");
     private static By DrpdwnCompanyLocator => By.Id("company");
@@ -26,8 +27,16 @@ public class ComputerDatabasePage(IWebDriver driver) : BasePage(driver)
         Click(BtnCreateLocator);
     }
     
+    public void Delete(string name)
+    {
+        FilterByName(name);
+        Click(TxNameLinkLocator(name));
+        Click(BtnDeleteLocator);
+    }
+    
     public void Edit(string computer, string name, string introduced, string discontinued, string company)
     {
+        FilterByName(computer);
         Click(TxNameLinkLocator(computer));
         Type(TxbxNameLocator, name);
         Type(TxbxDtIntroducedLocator, introduced);
@@ -42,9 +51,18 @@ public class ComputerDatabasePage(IWebDriver driver) : BasePage(driver)
         Click(BtnSubmitSearchLocator);
     }
     
-    public bool IsCreatedOrUpdated(string name)
+    public bool IsCreated(string name)
     {
-        return GetText(TxCreateSuccessLocator).Contains(name);
+        return GetText(TxCreateSuccessLocator).Contains(name) && GetText(TxCreateSuccessLocator).Contains("created");
     }
     
+    public bool IsUpdated(string name)
+    {
+        return GetText(TxCreateSuccessLocator).Contains(name) && GetText(TxCreateSuccessLocator).Contains("updated");
+    }
+    
+    public bool IsDeleted(string name)
+    {
+        return GetText(TxCreateSuccessLocator).Contains(name) && GetText(TxCreateSuccessLocator).Contains("deleted");
+    }
 }

@@ -29,7 +29,7 @@ public class ComputerDatabaseTest : BaseTest
             discontinued: discontinued,
             company: company
             );
-        Assert.AreEqual(computerDatabasePage.IsCreatedOrUpdated(name: name), true);
+        Assert.AreEqual(computerDatabasePage.IsCreated(name: name), true);
     }
     
     [Test]
@@ -37,7 +37,6 @@ public class ComputerDatabaseTest : BaseTest
     {
         Driver.Navigate().GoToUrl(BaseUrlComputerDatabase);
         var computerDatabasePage = new ComputerDatabasePage(Driver);
-        computerDatabasePage.FilterByName(name: "ACE");
         computerDatabasePage.Edit(
             computer: "Ace",
             name: "new name",
@@ -45,6 +44,15 @@ public class ComputerDatabaseTest : BaseTest
             discontinued: "2099-12-31",
             company: "Apple Inc."
             );
-        Assert.AreEqual(computerDatabasePage.IsCreatedOrUpdated(name: "new name"), true);
+        Assert.AreEqual(computerDatabasePage.IsUpdated(name: "new name"), true);
+    }
+    
+    [Test]
+    public void SuccessfulDeleteComputer()
+    {
+        Driver.Navigate().GoToUrl(BaseUrlComputerDatabase);
+        var computerDatabasePage = new ComputerDatabasePage(Driver);
+        computerDatabasePage.Delete(name: "ACE");
+        Assert.AreEqual(computerDatabasePage.IsDeleted("ACE"), true);
     }
 }
